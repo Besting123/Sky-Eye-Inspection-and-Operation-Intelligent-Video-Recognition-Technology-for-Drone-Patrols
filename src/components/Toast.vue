@@ -38,55 +38,9 @@
 </template>
 
 <script setup>
-import { ref, onUnmounted } from 'vue'
+import { useToast } from '../composables/useToast'
 
-const toasts = ref([])
-let toastId = 0
-const timers = new Map()
-
-function addToast({ type = 'info', title = '', message, duration = 5000 }) {
-  const id = ++toastId
-  const toast = {
-    id,
-    type,
-    title,
-    message,
-    duration,
-    progress: 100
-  }
-
-  toasts.value.push(toast)
-
-  if (duration > 0) {
-    const startTime = Date.now()
-    const interval = setInterval(() => {
-      const elapsed = Date.now() - startTime
-      toast.progress = Math.max(0, 100 - (elapsed / duration) * 100)
-
-      if (elapsed >= duration) {
-        clearInterval(interval)
-        removeToast(id)
-      }
-    }, 50)
-
-    timers.set(id, interval)
-  }
-
-  return id
-}
-
-function removeToast(id) {
-  const index = toasts.value.findIndex(t => t.id === id)
-  if (index !== -1) {
-    toasts.value.splice(index, 1)
-  }
-
-  const timer = timers.get(id)
-  if (timer) {
-    clearInterval(timer)
-    timers.delete(id)
-  }
-}
+const { toasts, removeToast } = useToast()
 
 function getToastClass(type) {
   const classes = {
@@ -137,16 +91,6 @@ function getIcon(type) {
   }
   return icons[type] || icons.info
 }
-
-onUnmounted(() => {
-  timers.forEach(timer => clearInterval(timer))
-  timers.clear()
-})
-
-defineExpose({
-  addToast,
-  removeToast
-})
 </script>
 
 <style scoped>

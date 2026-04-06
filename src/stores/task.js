@@ -9,6 +9,7 @@ export const useTaskStore = defineStore('task', () => {
   const currentTask = ref(null)
   const loading = ref(false)
   const error = ref(null)
+  const pagination = ref({ total: 0, page: 1, limit: 10, totalPages: 0 })
 
   const activeTask = computed(() => {
     if (!activeTaskId.value) return null
@@ -30,6 +31,9 @@ export const useTaskStore = defineStore('task', () => {
     try {
       const response = await taskApi.getTasks(params)
       tasks.value = response.data.tasks
+      if (response.data.pagination) {
+        pagination.value = response.data.pagination
+      }
       return response
     } catch (e) {
       error.value = e.message
@@ -250,6 +254,7 @@ export const useTaskStore = defineStore('task', () => {
     currentTask,
     loading,
     error,
+    pagination,
     activeTask,
     pendingTasks,
     completedTasks,

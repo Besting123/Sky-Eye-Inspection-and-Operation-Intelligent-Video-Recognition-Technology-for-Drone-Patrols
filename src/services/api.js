@@ -108,20 +108,52 @@ class ApiClient {
   /**
    * POST 请求 (FormData)
    */
-  async postFormData(endpoint, formData) {
-    const headers = {}
-    const token = this.getToken()
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`
-    }
+  postFormData(endpoint, formData, uploadCallbacks = null) {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest()
+      const url = `${this.baseURL}${endpoint}`
 
-    const response = await fetch(`${this.baseURL}${endpoint}`, {
-      method: 'POST',
-      headers,
-      body: formData
+      xhr.open('POST', url)
+
+      const token = this.getToken()
+      if (token) {
+        xhr.setRequestHeader('Authorization', `Bearer ${token}`)
+      }
+
+      if (uploadCallbacks?.onProgress && xhr.upload) {
+        xhr.upload.onprogress = (event) => {
+          if (event.lengthComputable) {
+            const percent = Math.round((event.loaded * 100) / event.total)
+            uploadCallbacks.onProgress(percent)
+          }
+        }
+      }
+
+      xhr.onload = () => {
+        let data
+        try {
+          data = JSON.parse(xhr.responseText)
+        } catch (e) {
+          data = xhr.responseText
+        }
+
+        if (xhr.status >= 200 && xhr.status < 300) {
+          resolve(data)
+        } else {
+          const error = new Error(data.error?.message || '请求失败')
+          error.code = data.error?.code || 'UNKNOWN_ERROR'
+          error.status = xhr.status
+          error.details = data.error?.details
+          reject(error)
+        }
+      }
+
+      xhr.onerror = () => {
+        reject(new Error('网络请求失败'))
+      }
+
+      xhr.send(formData)
     })
-
-    return this.handleResponse(response)
   }
 
   /**
@@ -183,12 +215,12 @@ export const taskApi = {
   /**
    * 创建识别任务
    */
-  createTask(videoFile, metadata) {
+  createTask(videoFile, metadata, uploadCallbacks = null) {
     const formData = new FormData()
     formData.append('video', videoFile)
     formData.append('metadata', JSON.stringify(metadata))
     
-    return apiClient.postFormData('/tasks', formData)
+    return apiClient.postFormData('/tasks', formData, uploadCallbacks)
   },
 
   /**
