@@ -11,6 +11,12 @@ const router = createRouter({
       component: Workspace
     },
     {
+      path: '/workspace/:taskId',
+      name: 'workspace-detail',
+      component: Workspace,
+      props: true
+    },
+    {
       path: '/history',
       name: 'history',
       component: History

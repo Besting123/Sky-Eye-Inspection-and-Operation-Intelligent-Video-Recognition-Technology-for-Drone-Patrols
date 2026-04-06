@@ -229,31 +229,22 @@
       </div>
     </div>
 
-    <!-- Modal (New Task) -->
-    <div v-if="isModalOpen" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center">
-      <div class="w-[500px] bg-surface-container-high rounded border border-outline-variant/30 shadow-2xl overflow-hidden">
-        <div class="p-6 border-b border-outline-variant/10 flex justify-between items-center">
-          <h3 class="text-xl font-bold">新建识别任务</h3>
-          <button @click="isModalOpen = false" class="text-on-surface-variant hover:text-on-surface"><span class="material-symbols-outlined">close</span></button>
-        </div>
-        <div class="p-8">
-          <div class="border-2 border-dashed border-outline-variant/50 rounded p-12 flex flex-col items-center justify-center hover:border-primary transition-colors cursor-pointer group">
-            <span class="material-symbols-outlined text-4xl text-on-surface-variant group-hover:text-primary transition-colors mb-4">cloud_upload</span>
-            <div class="text-sm font-bold mb-1">点击或拖拽视频文件至此处</div>
-            <div class="text-xs text-on-surface-variant">支持 MP4, AVI, MOV (最大 2GB)</div>
-          </div>
-        </div>
-        <div class="p-4 bg-surface-container-highest flex justify-end gap-3">
-          <button @click="isModalOpen = false" class="px-6 py-2 text-sm text-on-surface-variant hover:text-on-surface">取消</button>
-          <button @click="createTask" class="px-6 py-2 bg-primary text-on-primary font-bold rounded">开始识别</button>
-        </div>
-      </div>
-    </div>
+    <TaskCreateModal
+      :is-open="isModalOpen"
+      @close="isModalOpen = false"
+      @submit="handleCreateTask"
+    />
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import { useTaskStore } from '@/stores/task'
+import { useToast } from '@/composables/useToast'
+import TaskCreateModal from '@/components/TaskCreateModal.vue'
+
+const taskStore = useTaskStore()
+const { showToast } = useToast()
 
 const isModalOpen = ref(false)
 const isDrawerOpen = ref(false)
@@ -275,13 +266,31 @@ const getStatusClass = (status) => {
   return ''
 }
 
-const createTask = () => {
-  isModalOpen.value = false
-  tasks.value.unshift({
-    id: String(Math.floor(Math.random() * 9000) + 1000),
-    status: 'pending',
-    statusText: '处理中',
-    date: new Date().toISOString().replace('T', ' ').substring(0, 16)
-  })
+async function handleCreateTask({ file, metadata, uploadCallbacks }) {
+  try {
+    const result = await taskStore.createTask(file, metadata, uploadCallbacks)
+    
+    if (result.success) {
+      showToast('任务创建成功', 'success')
+      isModalOpen.value = false
+      
+      tasks.value.unshift({
+        id: result.data.taskId,
+        status: 'pending',
+        statusText: '处理中',
+        date: new Date().toISOString().replace('T', ' ').substring(0, 16)
+      })
+      
+      activeTaskId.value = result.data.taskId
+    }
+  } catch (error) {
+    showToast(error.message || '任务创建失败', 'error')
+  }
 }
+
+onMounted(() => {
+  taskStore.fetchTasks().catch(() => {
+    // 保持使用本地 mock 数据作为 fallback
+  })
+})
 </script>

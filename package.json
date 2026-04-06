@@ -1,7 +1,8 @@
 {
-  "name": "railway-station-frontend",
+  "name": "railway-recognition-workstation",
+  "description": "铁路编组识别工作站 - 基于 AI 视觉识别技术的智能化铁路货运管理系统",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "pinia": "^2.3.1",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0"
   },
