@@ -4,9 +4,9 @@
     @drop.prevent="handleDrop"
     @dragover.prevent="isDragging = true"
     @dragleave.prevent="isDragging = false"
-    class="border-2 border-dashed rounded p-12 flex flex-col items-center justify-center transition-colors cursor-pointer"
+    class="border-2 border-dashed rounded-comfortable p-12 flex flex-col items-center justify-center transition-all duration-200 cursor-pointer"
     :class="[
-      isDragging ? 'border-primary bg-primary/5' : 'border-outline-variant/50 hover:border-primary',
+      isDragging ? 'border-apple-blue bg-apple-blue/5' : 'border-text-primary/20 hover:border-apple-blue',
       uploading ? 'pointer-events-none opacity-60' : ''
     ]"
   >
@@ -19,31 +19,31 @@
     />
     
     <span 
-      class="material-symbols-outlined text-4xl mb-4 transition-colors"
-      :class="isDragging ? 'text-primary' : 'text-on-surface-variant'"
+      class="material-symbols-outlined text-4xl mb-4 transition-colors duration-200"
+      :class="isDragging ? 'text-apple-blue' : 'text-text-tertiary'"
     >
       cloud_upload
     </span>
     
     <div v-if="!uploading" class="text-center">
-      <div class="text-sm font-bold mb-1">{{ title || '点击或拖拽视频文件至此处' }}</div>
-      <div class="text-xs text-on-surface-variant">
+      <div class="text-body font-semibold mb-1 text-text-primary">{{ title || '点击或拖拽视频文件至此处' }}</div>
+      <div class="text-caption text-text-tertiary">
         {{ subtitle || '支持 MP4, AVI, MOV (最大 2GB)' }}
       </div>
     </div>
     
     <div v-else class="w-full max-w-md">
-      <div class="text-sm font-bold text-center mb-2">{{ uploadMessage }}</div>
-      <div class="w-full h-2 bg-surface-variant rounded-full overflow-hidden">
+      <div class="text-body font-semibold text-center mb-2 text-text-primary">{{ uploadMessage }}</div>
+      <div class="w-full h-2 bg-light-gray rounded-full overflow-hidden">
         <div 
-          class="h-full bg-primary transition-all duration-300"
+          class="h-full bg-apple-blue transition-all duration-300"
           :style="{ width: `${uploadProgress}%` }"
         ></div>
       </div>
-      <div class="text-xs text-on-surface-variant text-center mt-1">{{ uploadProgress }}%</div>
+      <div class="text-caption text-text-tertiary text-center mt-1">{{ uploadProgress }}%</div>
     </div>
     
-    <div v-if="error" class="mt-4 text-xs text-error">{{ error }}</div>
+    <div v-if="error" class="mt-4 text-caption text-error">{{ error }}</div>
   </div>
 </template>
 

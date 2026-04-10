@@ -4,59 +4,74 @@ export default {
     "./index.html",
     "./src/**/*.{vue,js,ts,jsx,tsx}",
   ],
-  darkMode: "class",
   theme: {
     extend: {
+        fontFamily: {
+            display: ['"SF Pro Display"', '-apple-system', 'BlinkMacSystemFont', '"Helvetica Neue"', 'Helvetica', 'Arial', 'sans-serif'],
+            body: ['"SF Pro Text"', '-apple-system', 'BlinkMacSystemFont', '"Helvetica Neue"', 'Helvetica', 'Arial', 'sans-serif'],
+        },
         colors: {
-            background: "#020617", 
-            surface: "rgba(15, 23, 42, 0.6)", 
-            "surface-highlight": "rgba(30, 41, 59, 0.8)", 
-            primary: "#00f0ff", 
-            "primary-dim": "#00909e",
-            secondary: "#b026ff", 
-            "secondary-dim": "#701a9e",
-            accent: "#ff003c", 
-            "on-primary": "#000000",
-            "on-secondary": "#ffffff",
-            "on-surface": "#e2e8f0", 
-            "on-surface-variant": "#94a3b8", 
-            outline: "rgba(0, 240, 255, 0.3)", 
-            "outline-glow": "rgba(0, 240, 255, 0.8)",
-            error: "#ff003c",
-            success: "#00ff66",
-            warning: "#ffe600",
+            // Primary backgrounds (Light mode)
+            'light-gray': '#f5f5f7',
+            'near-black': '#1d1d1f',
+            
+            // Interactive colors
+            'apple-blue': '#0071e3',
+            'link-blue': '#0066cc',
+            
+            // Text colors
+            'text-primary': '#1d1d1f',
+            'text-secondary': 'rgba(0, 0, 0, 0.8)',
+            'text-tertiary': 'rgba(0, 0, 0, 0.48)',
+            
+            // Button states
+            'button-active': '#ededf2',
+            'button-light': '#fafafc',
+            
+            // Status colors
+            error: '#ff3b30',
+            success: '#34c759',
+            warning: '#ffcc00',
         },
         boxShadow: {
-            'glow-cyan': '0 0 10px rgba(0, 240, 255, 0.5), 0 0 20px rgba(0, 240, 255, 0.3)',
-            'glow-purple': '0 0 10px rgba(176, 38, 255, 0.5), 0 0 20px rgba(176, 38, 255, 0.3)',
-            'glow-red': '0 0 10px rgba(255, 0, 60, 0.5), 0 0 20px rgba(255, 0, 60, 0.3)',
-            'panel': '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
+            'apple': 'rgba(0, 0, 0, 0.22) 3px 5px 30px 0px',
+            'apple-sm': 'rgba(0, 0, 0, 0.1) 0px 2px 10px 0px',
         },
-        backgroundImage: {
-            'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-            'cyber-grid': 'linear-gradient(rgba(0, 240, 255, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 240, 255, 0.1) 1px, transparent 1px)',
+        letterSpacing: {
+            'tight-56': '-0.28px',
+            'tight-17': '-0.374px',
+            'tight-14': '-0.224px',
+            'tight-12': '-0.12px',
+            'tight-10': '-0.08px',
+            'wide-28': '0.196px',
+            'wide-21': '0.231px',
         },
-        backgroundSize: {
-            'cyber-grid': '30px 30px',
+        lineHeight: {
+            'hero': '1.07',
+            'section': '1.10',
+            'heading': '1.14',
+            'card': '1.19',
+            'body': '1.47',
         },
-        animation: {
-            'pulse-glow': 'pulseGlow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-            'scanline': 'scanline 8s linear infinite',
+        borderRadius: {
+            'micro': '5px',
+            'standard': '8px',
+            'comfortable': '11px',
+            'large': '12px',
+            'pill': '980px',
         },
-        keyframes: {
-            pulseGlow: {
-                '0%, 100%': { opacity: '1' },
-                '50%': { opacity: '.5' },
-            },
-            scanline: {
-                '0%': { transform: 'translateY(-100%)' },
-                '100%': { transform: 'translateY(100vh)' }
-            }
+        fontSize: {
+            'display-hero': ['56px', { lineHeight: '1.07', letterSpacing: '-0.28px', fontWeight: '600' }],
+            'section-heading': ['40px', { lineHeight: '1.10', fontWeight: '600' }],
+            'tile-heading': ['28px', { lineHeight: '1.14', letterSpacing: '0.196px', fontWeight: '400' }],
+            'card-title': ['21px', { lineHeight: '1.19', letterSpacing: '0.231px', fontWeight: '700' }],
+            'sub-heading': ['21px', { lineHeight: '1.19', letterSpacing: '0.231px', fontWeight: '400' }],
         },
-        fontFamily: {
-            headline: ['"Rajdhani"', "sans-serif"],
-            body: ['"Inter"', "sans-serif"],
-            mono: ['"Fira Code"', "monospace"],
+        backdropBlur: {
+            'apple': '20px',
+        },
+        backdropSaturate: {
+            'apple': '180%',
         }
     },
   },

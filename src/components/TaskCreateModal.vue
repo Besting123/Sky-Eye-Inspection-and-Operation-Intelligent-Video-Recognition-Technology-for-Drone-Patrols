@@ -1,21 +1,21 @@
 <template>
   <teleport to="body">
     <transition name="modal">
-      <div v-if="isOpen" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center" @click.self="handleClose">
-        <div class="w-[600px] max-h-[90vh] bg-surface-container-high rounded-xl border border-outline-variant/30 shadow-2xl overflow-hidden flex flex-col">
-          <div class="p-6 border-b border-outline-variant/10 flex justify-between items-center flex-shrink-0">
+      <div v-if="isOpen" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-[100] flex items-center justify-center" @click.self="handleClose">
+        <div class="w-[600px] max-h-[90vh] bg-white rounded-large shadow-apple overflow-hidden flex flex-col">
+          <div class="p-6 border-b border-text-primary/10 flex justify-between items-center flex-shrink-0">
             <div>
-              <h3 class="text-xl font-bold text-on-surface">新建识别任务</h3>
-              <p class="text-xs text-on-surface-variant mt-1">上传视频并配置任务参数</p>
+              <h3 class="text-xl font-semibold text-text-primary font-display">新建识别任务</h3>
+              <p class="text-caption text-text-tertiary mt-1">上传视频并配置任务参数</p>
             </div>
-            <button @click="handleClose" class="text-on-surface-variant hover:text-on-surface transition-colors">
+            <button @click="handleClose" class="text-text-tertiary hover:text-text-primary transition-colors duration-200">
               <span class="material-symbols-outlined">close</span>
             </button>
           </div>
           
           <div class="flex-1 overflow-y-auto p-6 space-y-6">
             <div>
-              <label class="block text-sm font-bold text-on-surface mb-2">
+              <label class="block text-caption-bold text-text-primary mb-2">
                 视频文件 <span class="text-error">*</span>
               </label>
               <VideoUpload
@@ -26,49 +26,49 @@
             </div>
             
             <div>
-              <label class="block text-sm font-bold text-on-surface mb-2">
+              <label class="block text-caption-bold text-text-primary mb-2">
                 识别位置 <span class="text-error">*</span>
               </label>
               <input
                 v-model="formData.location"
                 type="text"
                 placeholder="例: 京广线 - 04号进站口"
-                class="w-full px-4 py-2.5 bg-surface-container-lowest border border-outline-variant/30 rounded-lg text-on-surface text-sm focus:border-primary focus:outline-none transition-colors"
+                class="w-full px-4 py-2.5 bg-light-gray border border-text-primary/10 rounded-comfortable text-text-primary text-body focus:border-apple-blue focus:ring-2 focus:ring-apple-blue/20 focus:outline-none transition-all duration-200"
                 :class="{ 'border-error': errors.location }"
               />
-              <p v-if="errors.location" class="text-xs text-error mt-1">{{ errors.location }}</p>
-              <p class="text-xs text-on-surface-variant mt-1">请输入视频拍摄的具体位置或线路信息</p>
+              <p v-if="errors.location" class="text-caption text-error mt-1">{{ errors.location }}</p>
+              <p class="text-caption text-text-tertiary mt-1">请输入视频拍摄的具体位置或线路信息</p>
             </div>
             
             <div>
-              <label class="block text-sm font-bold text-on-surface mb-2">
+              <label class="block text-caption-bold text-text-primary mb-2">
                 任务描述
               </label>
               <textarea
                 v-model="formData.description"
                 rows="3"
                 placeholder="可选：添加任务相关说明或备注信息"
-                class="w-full px-4 py-2.5 bg-surface-container-lowest border border-outline-variant/30 rounded-lg text-on-surface text-sm focus:border-primary focus:outline-none transition-colors resize-none"
+                class="w-full px-4 py-2.5 bg-light-gray border border-text-primary/10 rounded-comfortable text-text-primary text-body focus:border-apple-blue focus:ring-2 focus:ring-apple-blue/20 focus:outline-none transition-all duration-200 resize-none"
               ></textarea>
-              <p class="text-xs text-on-surface-variant mt-1">选填，用于记录任务的额外信息</p>
+              <p class="text-caption text-text-tertiary mt-1">选填，用于记录任务的额外信息</p>
             </div>
           </div>
           
-          <div class="p-4 bg-surface-container-highest border-t border-outline-variant/10 flex justify-between items-center flex-shrink-0">
-            <div class="text-xs text-on-surface-variant">
+          <div class="p-4 bg-light-gray border-t border-text-primary/10 flex justify-between items-center flex-shrink-0">
+            <div class="text-caption text-text-tertiary">
               <span class="text-error">*</span> 为必填项
             </div>
             <div class="flex gap-3">
               <button
                 @click="handleClose"
-                class="px-6 py-2 text-sm text-on-surface-variant hover:text-on-surface transition-colors"
+                class="px-6 py-2 text-body text-text-secondary hover:text-text-primary transition-colors duration-200"
                 :disabled="uploading"
               >
                 取消
               </button>
               <button
                 @click="handleSubmit"
-                class="px-6 py-2 bg-primary text-on-primary font-bold rounded-lg hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                class="apple-button-primary disabled:opacity-50 disabled:cursor-not-allowed"
                 :disabled="!canSubmit || uploading"
               >
                 <span v-if="uploading" class="material-symbols-outlined text-sm animate-spin">progress_activity</span>
@@ -204,22 +204,12 @@ defineExpose({
 <style scoped>
 .modal-enter-active,
 .modal-leave-active {
-  transition: opacity 0.3s ease;
+  transition: opacity 0.2s ease;
 }
 
 .modal-enter-from,
 .modal-leave-to {
   opacity: 0;
-}
-
-.modal-enter-active .modal-content,
-.modal-leave-active .modal-content {
-  transition: transform 0.3s ease;
-}
-
-.modal-enter-from .modal-content,
-.modal-leave-to .modal-content {
-  transform: scale(0.95);
 }
 
 @keyframes spin {

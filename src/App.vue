@@ -1,11 +1,7 @@
 <template>
-  <div class="min-h-screen bg-background text-on-background flex flex-col font-body selection:bg-primary/30 selection:text-primary">
+  <div class="min-h-screen bg-light-gray text-text-primary flex flex-col font-body selection:bg-apple-blue/30 selection:text-white antialiased">
     <TopNav />
-    <div class="flex flex-1 overflow-hidden relative pt-16">
-      <!-- Added a subtle ambient glow behind main content -->
-      <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-[100px] pointer-events-none"></div>
-      <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/5 rounded-full blur-[100px] pointer-events-none"></div>
-      
+    <div class="flex flex-1 overflow-hidden relative pt-12">
       <router-view v-slot="{ Component }">
         <transition name="fade" mode="out-in">
           <component :is="Component" />
